@@ -25,7 +25,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({}) => {
         <MainStack.Screen
           name="Difficulty"
           component={DifficultyScreen}
-          options={{ headerShown: false }}
+          options={{ title: "Select Difficulty" }}
         />
         <MainStack.Screen
           name="Quiz"
