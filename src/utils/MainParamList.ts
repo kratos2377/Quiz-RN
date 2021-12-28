@@ -6,6 +6,8 @@ export type MainParamList = {
   Quiz: undefined;
   Category: undefined;
   Difficulty: undefined;
+  Playing: undefined;
+  Score: undefined;
 };
 
 export type MainNavProps<T extends keyof MainParamList> = {

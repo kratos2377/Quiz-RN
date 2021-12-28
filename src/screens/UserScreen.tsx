@@ -1,8 +1,12 @@
 import React from "react";
-import { View } from "react-native";
+import { View, Text } from "react-native";
 
 interface UserScreenProps {}
 
 export const UserScreen: React.FC<UserScreenProps> = ({}) => {
-  return <View></View>;
+  return (
+    <View>
+      <Text>User</Text>
+    </View>
+  );
 };

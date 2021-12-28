@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import AppLoading from "expo-app-loading";
 import * as Font from "expo-font";
 import { StyleSheet, Text, View } from "react-native";
-import { CategoryScreen } from "./src/screens/CategoryScreen";
+import { CategoryScreen } from "./src/screens/PlayingScreen";
 import { HomeScreen } from "./src/screens/HomeScreen";
 
 export default function App() {

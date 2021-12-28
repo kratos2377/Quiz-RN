@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   View,
@@ -7,16 +7,25 @@ import {
   Touchable,
   TouchableOpacity,
 } from "react-native";
+import { Appbar } from "react-native-paper";
 import { FlatGrid } from "react-native-super-grid";
 import CategoryGridTile from "../components/CategoryGridTile";
 import { CATEGORIES } from "../data/dummy-data";
 import CategoryModel from "../model/category";
+import { MainNavProps } from "../utils/MainParamList";
 
-interface CategoryScreenProps {}
+interface CategoryScreenProps {
+  name: string;
+  code: string;
+}
 
-export const CategoryScreen: React.FC<CategoryScreenProps> = ({}) => {
-  const changeScreen = (item) => {
-    console.log(item);
+export const CategoryScreen = ({ navigation }: MainNavProps<"Category">) => {
+  const [category, setCategory] = useState("");
+
+  const changeScreen = (item: ListRenderItem<CategoryScreenProps>) => {
+    navigation.navigate("Difficulty", {
+      category: category,
+    });
   };
 
   const [items, setItems] = React.useState([
@@ -41,24 +50,38 @@ export const CategoryScreen: React.FC<CategoryScreenProps> = ({}) => {
     { name: "SILVER", code: "#bdc3c7" },
     { name: "ASBESTOS", code: "#7f8c8d" },
   ]);
-
+  //For future reference
+  //uri: "https://cdn-icons-png.flaticon.com/512/1077/1077340.png",
+  //or this atom-variant
   return (
-    <FlatGrid
-      itemDimension={130}
-      data={items}
-      renderItem={({ item }) => (
-        <TouchableOpacity
-          onPress={() => {
-            changeScreen(item);
-          }}
-        >
-          <View style={[styles.itemContainer, { backgroundColor: item.code }]}>
-            <Text style={styles.itemName}>{item.name}</Text>
-            <Text style={styles.itemCode}>{item.code}</Text>
-          </View>
-        </TouchableOpacity>
-      )}
-    />
+    <View>
+      <Appbar.Header style={{ backgroundColor: "white" }}>
+        <Appbar.Action
+          icon="scoreboard"
+          onPress={() => console.log("Pressed scoreboard")}
+        />
+        <Appbar.Content title="Select Category" />
+      </Appbar.Header>
+      <FlatGrid
+        itemDimension={130}
+        data={items}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            onPress={() => {
+              setCategory(item.name);
+              changeScreen(item);
+            }}
+          >
+            <View
+              style={[styles.itemContainer, { backgroundColor: item.code }]}
+            >
+              <Text style={styles.itemName}>{item.name}</Text>
+              <Text style={styles.itemCode}>{item.code}</Text>
+            </View>
+          </TouchableOpacity>
+        )}
+      />
+    </View>
   );
 };
 
