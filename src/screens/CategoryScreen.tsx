@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   StyleSheet,
   View,
@@ -9,9 +9,6 @@ import {
 } from "react-native";
 import { Appbar } from "react-native-paper";
 import { FlatGrid } from "react-native-super-grid";
-import CategoryGridTile from "../components/CategoryGridTile";
-import { CATEGORIES } from "../data/dummy-data";
-import CategoryModel from "../model/category";
 import { MainNavProps } from "../utils/MainParamList";
 
 export const CategoryScreen = ({ navigation }: MainNavProps<"Category">) => {

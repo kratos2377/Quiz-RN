@@ -1,29 +1,17 @@
 import React, { useState } from "react";
-import {
-  Touchable,
-  TouchableOpacity,
-  View,
-  Text,
-  StyleSheet,
-} from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import {
   ActivityIndicator,
   Button,
-  Colors,
   Dialog,
-  IconButton,
-  Modal,
-  Paragraph,
   Portal,
   Provider,
 } from "react-native-paper";
-import Svg, { G, Path } from "react-native-svg";
 import { fetchQuizQuestions } from "../API";
 import CowSvgComponent from "../SVG/cow";
 import HenSvgComponent from "../SVG/hen";
 import TigerSvgComponent from "../SVG/tiger";
-import { AnswerObject, Question, QuestionsState } from "../type";
-import { shuffleArray } from "../util";
+import { QuestionsState } from "../type";
 import { MainNavProps } from "../utils/MainParamList";
 
 interface DifficultyScreenProps {}
