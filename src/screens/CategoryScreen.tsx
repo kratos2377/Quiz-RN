@@ -14,41 +14,27 @@ import { CATEGORIES } from "../data/dummy-data";
 import CategoryModel from "../model/category";
 import { MainNavProps } from "../utils/MainParamList";
 
-interface CategoryScreenProps {
-  name: string;
-  code: string;
-}
-
 export const CategoryScreen = ({ navigation }: MainNavProps<"Category">) => {
-  const [category, setCategory] = useState("");
-
-  const changeScreen = (item: ListRenderItem<CategoryScreenProps>) => {
+  const changeScreen = (name: string, code: number) => {
     navigation.navigate("Difficulty", {
-      category: category,
+      category: name,
+      code: code,
     });
   };
 
   const [items, setItems] = React.useState([
-    { name: "TURQUOISE", code: "#1abc9c" },
-    { name: "EMERALD", code: "#2ecc71" },
-    { name: "PETER RIVER", code: "#3498db" },
-    { name: "AMETHYST", code: "#9b59b6" },
-    { name: "WET ASPHALT", code: "#34495e" },
-    { name: "GREEN SEA", code: "#16a085" },
-    { name: "NEPHRITIS", code: "#27ae60" },
-    { name: "BELIZE HOLE", code: "#2980b9" },
-    { name: "WISTERIA", code: "#8e44ad" },
-    { name: "MIDNIGHT BLUE", code: "#2c3e50" },
-    { name: "SUN FLOWER", code: "#f1c40f" },
-    { name: "CARROT", code: "#e67e22" },
-    { name: "ALIZARIN", code: "#e74c3c" },
-    { name: "CLOUDS", code: "#ecf0f1" },
-    { name: "CONCRETE", code: "#95a5a6" },
-    { name: "ORANGE", code: "#f39c12" },
-    { name: "PUMPKIN", code: "#d35400" },
-    { name: "POMEGRANATE", code: "#c0392b" },
-    { name: "SILVER", code: "#bdc3c7" },
-    { name: "ASBESTOS", code: "#7f8c8d" },
+    { name: "General Knowledge", color: "#1abc9c", code: 9 },
+    { name: "Computers", color: "#2ecc71", code: 18 },
+    { name: "Mathematics", color: "#3498db", code: 19 },
+    { name: "History", color: "#9b59b6", code: 23 },
+    { name: "Sports", color: "#34495e", code: 21 },
+    { name: "Mythology", color: "#16a085", code: 20 },
+    { name: "Anime & Manga", color: "#27ae60", code: 31 },
+    { name: "Animals", color: "#2980b9", code: 27 },
+    { name: "Geography", color: "#8e44ad", code: 22 },
+    { name: "Celebrities", color: "#2c3e50", code: 26 },
+    { name: "Politics", color: "#f1c40f", code: 24 },
+    { name: "Video Games", color: "#e67e22", code: 15 },
   ]);
   //For future reference
   //uri: "https://cdn-icons-png.flaticon.com/512/1077/1077340.png",
@@ -68,15 +54,13 @@ export const CategoryScreen = ({ navigation }: MainNavProps<"Category">) => {
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress={() => {
-              setCategory(item.name);
-              changeScreen(item);
+              changeScreen(item.name, item.code);
             }}
           >
             <View
-              style={[styles.itemContainer, { backgroundColor: item.code }]}
+              style={[styles.itemContainer, { backgroundColor: item.color }]}
             >
               <Text style={styles.itemName}>{item.name}</Text>
-              <Text style={styles.itemCode}>{item.code}</Text>
             </View>
           </TouchableOpacity>
         )}

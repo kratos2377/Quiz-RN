@@ -1,8 +1,120 @@
-import React from "react";
-import { View } from "react-native";
+import React, { useState } from "react";
+import { View, Text, StyleSheet } from "react-native";
+import { Appbar, Button, RadioButton } from "react-native-paper";
+import { MainNavProps } from "../utils/MainParamList";
 
 interface QuizScreenProps {}
 
-export const QuizScreen: React.FC<QuizScreenProps> = ({}) => {
-  return <View></View>;
+export const QuizScreen = ({ navigation, route }: MainNavProps<"Quiz">) => {
+  const [questions, setQuestions] = useState([...route?.params?.question]);
+  console.log(questions);
+  const [ind, setInd] = useState(0);
+  const [checked, setChecked] = React.useState("first");
+  const [score, setScore] = useState(0);
+  const [answers, setAnswers] = useState([...questions[ind].answers]);
+  const [answerSelected, setAnswerSelected] = useState("");
+  const [correctAnswer, setCorrectAnswer] = useState(
+    questions[ind].correct_answer
+  );
+
+  const [pressed, setPressed] = useState(false);
+
+  const [questionAsked, setQuestionAsked] = useState(questions[ind].question);
+  const nextQuestion = () => {
+    if (answerSelected == correctAnswer) {
+      setScore(score + 1);
+    }
+
+    setQuestionAsked(questions[ind + 1].question);
+    setAnswers([...questions[ind + 1].answers]);
+    setCorrectAnswer(questions[ind + 1].correct_answer);
+    setPressed(false);
+    setInd(ind + 1);
+  };
+
+  const exitQuiz = () => {
+    navigation.pop();
+  };
+
+  return (
+    <View style={{ flex: 1 }}>
+      <Appbar>
+        <Appbar.Content title={"Question " + (ind + 1).toString()} />
+        <Appbar.Content title={score} />
+      </Appbar>
+      <View style={{ marginVertical: 30, marginHorizontal: 20 }}>
+        <Text>{questionAsked}</Text>
+      </View>
+
+      <View>
+        <RadioButton.Group
+          onValueChange={(answer) => {
+            setAnswerSelected(answer);
+            setPressed(true);
+          }}
+          value={answerSelected}
+        >
+          <RadioButton.Item
+            position="leading"
+            label={answers[0]}
+            value={answers[0]}
+          />
+          <RadioButton.Item
+            position="leading"
+            label={answers[1]}
+            value={answers[1]}
+          />
+          <RadioButton.Item
+            position="leading"
+            label={answers[2]}
+            value={answers[2]}
+          />
+          <RadioButton.Item
+            position="leading"
+            label={answers[3]}
+            value={answers[3]}
+          />
+        </RadioButton.Group>
+      </View>
+
+      {ind != questions.length - 1 ? (
+        <Button
+          mode="outlined"
+          icon="arrow-right"
+          style={styles.nextButton}
+          onPress={nextQuestion}
+          disabled={!pressed}
+        >
+          Next
+        </Button>
+      ) : (
+        <Button
+          mode="outlined"
+          icon="arrow-right"
+          style={styles.nextButton}
+          disabled={!pressed}
+          onPress={() => {
+            console.log("Pressed Submit");
+          }}
+        >
+          Submit
+        </Button>
+      )}
+    </View>
+  );
 };
+
+const styles = StyleSheet.create({
+  bottom: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  nextButton: {
+    position: "absolute",
+    margin: 16,
+    right: 10,
+    bottom: 10,
+  },
+});
