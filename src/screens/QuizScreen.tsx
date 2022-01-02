@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Platform, StatusBar } from "react-native";
 import {
   Appbar,
   Button,
@@ -11,6 +11,7 @@ import {
 } from "react-native-paper";
 import { MainNavProps } from "../utils/MainParamList";
 import ConfettiCannon from "react-native-confetti-cannon";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 interface QuizScreenProps {}
 
@@ -51,8 +52,8 @@ export const QuizScreen = ({ navigation, route }: MainNavProps<"Quiz">) => {
   };
 
   return (
-    <Provider>
-      <View style={{ width: "100%", height: "100%" }}>
+    <SafeAreaProvider>
+      <Provider>
         <Portal>
           <Dialog visible={visible}>
             <Dialog.Content>
@@ -69,7 +70,7 @@ export const QuizScreen = ({ navigation, route }: MainNavProps<"Quiz">) => {
 
         <View style={styles.container}>
           <Appbar>
-            <Appbar.Content title={"Question " + (ind + 1).toString()} />
+            <Appbar.Content title={"Questions " + (ind + 1).toString()} />
             <Appbar.Content title={score} />
           </Appbar>
           <View style={{ marginVertical: 30, marginHorizontal: 20 }}>
@@ -131,8 +132,8 @@ export const QuizScreen = ({ navigation, route }: MainNavProps<"Quiz">) => {
             </Button>
           )}
         </View>
-      </View>
-    </Provider>
+      </Provider>
+    </SafeAreaProvider>
   );
 };
 
@@ -145,9 +146,8 @@ const styles = StyleSheet.create({
   },
 
   container: {
-    width: "100%",
-    height: "100%",
     flex: 1,
-    flexDirection: "column",
+    backgroundColor: "white",
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
 });

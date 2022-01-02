@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import {
   ActivityIndicator,
   Button,
@@ -7,6 +8,7 @@ import {
   Portal,
   Provider,
 } from "react-native-paper";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { fetchQuizQuestions } from "../API";
 import CowSvgComponent from "../SVG/cow";
 import HenSvgComponent from "../SVG/hen";
@@ -40,99 +42,98 @@ export const DifficultyScreen = ({
   };
 
   return (
-    <Provider>
-      <View>
-        <Portal>
-          <Dialog
-            style={styles.dialogStyle}
-            visible={visible}
-            onDismiss={() => {}}
-          >
-            <Dialog.Content>
-              {fetching ? (
-                <ActivityIndicator size="large" />
-              ) : (
-                <View>
-                  <Text>This Quiz contains 10 Questions</Text>
-                  <Text>
-                    The Category you selected was: {route?.params?.category}
-                  </Text>
-                  <Text>For Every Right answer you get +1 Point</Text>
-                  <Text>For Every Wrong answer you get +0 Point</Text>
-                </View>
-              )}
-            </Dialog.Content>
-            <Dialog.Actions>
-              {!fetching ? (
-                <Button
-                  onPress={() => {
-                    navigation.replace("Quiz", {
-                      question: questions,
-                    });
-                  }}
-                >
-                  Go To Quiz Screen
-                </Button>
-              ) : (
-                <View></View>
-              )}
-            </Dialog.Actions>
-          </Dialog>
-        </Portal>
+    <SafeAreaProvider>
+      <Provider>
+        <View>
+          <Portal>
+            <Dialog
+              style={styles.dialogStyle}
+              visible={visible}
+              onDismiss={() => {}}
+            >
+              <Dialog.Content>
+                {fetching ? (
+                  <ActivityIndicator size="large" />
+                ) : (
+                  <View>
+                    <Text>This Quiz contains 10 Questions</Text>
+                    <Text>
+                      The Category you selected was: {route?.params?.category}
+                    </Text>
+                    <Text>For Every Right answer you get +1 Point</Text>
+                    <Text>For Every Wrong answer you get +0 Point</Text>
+                  </View>
+                )}
+              </Dialog.Content>
+              <Dialog.Actions>
+                {!fetching ? (
+                  <Button
+                    onPress={() => {
+                      navigation.replace("Quiz", {
+                        question: questions,
+                      });
+                    }}
+                  >
+                    Go To Quiz Screen
+                  </Button>
+                ) : (
+                  <View></View>
+                )}
+              </Dialog.Actions>
+            </Dialog>
+          </Portal>
 
-        <View style={styles.container2}>
-          <View style={styles.svgBoard}>
-            {difficulty == "easy" ? (
-              <HenSvgComponent />
-            ) : difficulty == "medium" ? (
-              <CowSvgComponent />
-            ) : (
-              <TigerSvgComponent />
-            )}
+          <View style={styles.container}>
+            <View style={styles.svgBoard}>
+              {difficulty == "easy" ? (
+                <HenSvgComponent />
+              ) : difficulty == "medium" ? (
+                <CowSvgComponent />
+              ) : (
+                <TigerSvgComponent />
+              )}
+            </View>
+            <Button
+              style={styles.button}
+              icon="camera"
+              mode="contained"
+              onPress={() => {
+                setDifficulty("easy");
+              }}
+            >
+              Easy
+            </Button>
+
+            <Button
+              style={styles.button}
+              icon="camera"
+              mode="contained"
+              onPress={() => {
+                setDifficulty("medium");
+              }}
+            >
+              Medium
+            </Button>
+
+            <Button
+              style={styles.button}
+              icon="camera"
+              mode="contained"
+              onPress={() => {
+                setDifficulty("hard");
+              }}
+            >
+              Hard
+            </Button>
+            <Text style={{ margin: 10, alignSelf: "center" }}>
+              Current Difficulty: {difficulty.toUpperCase()}
+            </Text>
+
+            <Button onPress={startQuiz}>Start Quiz</Button>
           </View>
         </View>
-
-        <View style={styles.container}>
-          <Button
-            style={styles.button}
-            icon="camera"
-            mode="contained"
-            onPress={() => {
-              setDifficulty("easy");
-            }}
-          >
-            Easy
-          </Button>
-
-          <Button
-            style={styles.button}
-            icon="camera"
-            mode="contained"
-            onPress={() => {
-              setDifficulty("medium");
-            }}
-          >
-            Medium
-          </Button>
-
-          <Button
-            style={styles.button}
-            icon="camera"
-            mode="contained"
-            onPress={() => {
-              setDifficulty("hard");
-            }}
-          >
-            Hard
-          </Button>
-        </View>
-        <Text style={{ margin: 10, alignSelf: "center" }}>
-          Current Difficulty: {difficulty.toUpperCase()}
-        </Text>
-
-        <Button onPress={startQuiz}>Start Quiz</Button>
-      </View>
-    </Provider>
+      </Provider>
+    </SafeAreaProvider>
   );
 };
 

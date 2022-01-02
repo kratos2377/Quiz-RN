@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -8,7 +8,9 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Appbar } from "react-native-paper";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { FlatGrid } from "react-native-super-grid";
+import { openDatabaseService } from "../services/DB";
 import { MainNavProps } from "../utils/MainParamList";
 
 export const CategoryScreen = ({ navigation }: MainNavProps<"Category">) => {
@@ -33,36 +35,56 @@ export const CategoryScreen = ({ navigation }: MainNavProps<"Category">) => {
     { name: "Politics", color: "#f1c40f", code: 24 },
     { name: "Video Games", color: "#e67e22", code: 15 },
   ]);
+
+  useEffect(() => {
+    console.log("USe Effect");
+    const query = async () => {
+      const db = await openDatabaseService();
+
+      db.transaction((tx) => {
+        console.log("Transaction");
+        tx.executeSql("SELECT * FROM users", [], (tx, results) => {
+          console.log("Query Completed");
+          console.log(results);
+        });
+      });
+    };
+
+    query();
+  }, []);
+
   //For future reference
   //uri: "https://cdn-icons-png.flaticon.com/512/1077/1077340.png",
   //or this atom-variant
   return (
-    <View>
-      <Appbar.Header style={{ backgroundColor: "white" }}>
-        <Appbar.Action
-          icon="scoreboard"
-          onPress={() => console.log("Pressed scoreboard")}
-        />
-        <Appbar.Content title="Select Category" />
-      </Appbar.Header>
-      <FlatGrid
-        itemDimension={130}
-        data={items}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            onPress={() => {
-              changeScreen(item.name, item.code);
-            }}
-          >
-            <View
-              style={[styles.itemContainer, { backgroundColor: item.color }]}
+    <SafeAreaView>
+      <View>
+        <Appbar.Header style={{ backgroundColor: "white" }}>
+          <Appbar.Action
+            icon="scoreboard"
+            onPress={() => console.log("Pressed scoreboard")}
+          />
+          <Appbar.Content title="Select Category" />
+        </Appbar.Header>
+        <FlatGrid
+          itemDimension={130}
+          data={items}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              onPress={() => {
+                changeScreen(item.name, item.code);
+              }}
             >
-              <Text style={styles.itemName}>{item.name}</Text>
-            </View>
-          </TouchableOpacity>
-        )}
-      />
-    </View>
+              <View
+                style={[styles.itemContainer, { backgroundColor: item.color }]}
+              >
+                <Text style={styles.itemName}>{item.name}</Text>
+              </View>
+            </TouchableOpacity>
+          )}
+        />
+      </View>
+    </SafeAreaView>
   );
 };
 
